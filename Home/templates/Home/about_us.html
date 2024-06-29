@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+
+
+{% block contant %}
+
+    <div>
+        <center>
+            <img src="{{ obj.pottage.url }}" style=" width: 1200px; height: 570px">
+            <br>
+            <br>
+            <h2 class="alert alert-dark">{{ obj.title|urlize|title }}</h2>
+            <br>
+            <br>
+            <br>
+            <h5>{{ obj.general_description|linebreaks|urlize }}</h5>
+        </center>
+    </div>
+
+{% endblock %}

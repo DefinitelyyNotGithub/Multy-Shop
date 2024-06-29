@@ -1,8 +1,10 @@
+{% load render_partial %}
+
 {% include 'includes/header_refrences.html' %}
 
 {% include 'includes/header.html' %}
 
-{% include 'includes/NavBar.html' %}
+{% render_partial 'product:navbar' %}
 
 {% block contant %}
 

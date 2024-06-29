@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+
+{% block contant %}
+
+    <div class="col-lg-7 mb-5" style="margin-left: 330px">
+        <div class="contact-form bg-light p-30">
+            <div id="success"></div>
+            <form name="sentMessage" id="contactForm" novalidate="novalidate" method="post"
+                  action="{% url 'Account:code validation' %}">
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        <strong>ERROR!</strong>
+                        <ul>
+                            {% for field, errors in form.errors.items %}
+                                {% for error in errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+                <div class="control-group">
+
+                    {{ form.code }}
+                    {% if form.code %}
+                        <br>
+                        <div class="alert alert-danger">
+                            {{ form.code.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+                <br>
+                <div style="margin-left: 200px;">
+                    <button class="btn btn-primary py-2 px-4" type="submit" id="sendMessageButton" style="width: 400px">
+                        Enter
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

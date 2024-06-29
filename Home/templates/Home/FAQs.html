@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+
+{% block contant %}
+
+    <center>
+        {% for x in obj %}
+            <li>
+                <h4 style="font-family: 'Andalus'">{{ x.question }} ?</h4>
+                <strong>{{ x.answer }}</strong>
+                <hr>
+                <br>
+            </li>
+        {% endfor %}
+    </center>
+
+{% endblock %}
