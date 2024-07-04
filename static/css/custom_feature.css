@@ -1,0 +1,27 @@
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+
+#list-filter-btn {
+    width: 300px;
+    border-bottom-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+
+.center-img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%; /* Ensures the container is as tall as the parent */
+}
+
+.product-img img {
+    max-height: 100%; /* Ensures the image scales properly within the container */
+    max-width: 100%; /* Ensures the image scales properly within the container */
+}

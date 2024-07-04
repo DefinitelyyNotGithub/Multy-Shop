@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from django.utils.text import slugify
 from Account.models import User
@@ -27,12 +28,15 @@ class Size(models.Model):
 
 
 class ProductModel(models.Model):
+
     title = models.CharField(max_length=100, verbose_name="product name")
     product_description = models.TextField(null=True, blank=True, verbose_name="products short description ",
                                            help_text="located below the products name")
     slug = models.SlugField(unique=True, null=True, blank=True)
     price = models.SmallIntegerField()
     available_amount = models.PositiveSmallIntegerField(verbose_name="available amount")
+    color = models.ManyToManyField(Color, related_name="products")
+    size = models.ManyToManyField(Size, related_name="products")
 
     category = models.ManyToManyField(Category, related_name="sub_products")
 
@@ -45,8 +49,7 @@ class ProductModel(models.Model):
     add_date = models.DateField(auto_now_add=True, verbose_name="added date", editable=False)
     last_update = models.DateField(auto_now=True, verbose_name="Last update", editable=False)
 
-    favorites = models.ForeignKey(User, related_name='favorites', on_delete=models.CASCADE, null=True, blank=True,
-                                  editable=False)
+    favorites = models.ManyToManyField(User, related_name='favorites', editable=False)
 
     sell_count = models.PositiveSmallIntegerField(verbose_name="Sell mount", editable=False, default=0)
 
@@ -72,7 +75,7 @@ class ProductImage(models.Model):
 
 class ProductComment(models.Model):
     Product = models.ForeignKey(ProductModel, related_name="comments", on_delete=models.CASCADE)
-    autor = models.ForeignKey(User, related_name="comments", on_delete=models.CASCADE)
+    autor = models.OneToOneField(User, related_name="comments", on_delete=models.CASCADE)
 
     name = models.CharField(max_length=50)
     email = models.EmailField()
@@ -95,7 +98,7 @@ class ProductEAV(models.Model):
     quantity = models.PositiveSmallIntegerField()
 
     def __str__(self):
-        return f'{self.product.title}-----{self.quantity}-----{self.color.title} '
+        return f'{self.product.title}-----({self.quantity})-----{self.color.title} '
 
     class Meta:
         verbose_name = "product color and size"
@@ -103,7 +106,8 @@ class ProductEAV(models.Model):
 
 
 class DiscountPrice(models.Model):
-    product = models.ForeignKey(ProductModel, on_delete=models.CASCADE, related_name="Discount")
+    product = models.ForeignKey(ProductModel, related_name="discount", on_delete=models.CASCADE, null=True,
+                                blank=True)  # => null and blank only for development purposes
     discount_rate = models.PositiveSmallIntegerField(verbose_name="discount in percentage", help_text="in percentage %")
     limit = models.PositiveSmallIntegerField(help_text="Code Limitation", null=True, blank=True)
 
@@ -112,6 +116,9 @@ class DiscountPrice(models.Model):
 
     def __str__(self):
         return f'{self.product.title} {self.discount_rate}% OFF '
+
+    def reduced_price(self):
+        return self.product.price - (self.product.price * self.discount_rate / 100)
 
 
 class SiteTitleBanner(models.Model):
@@ -122,4 +129,3 @@ class SiteTitleBanner(models.Model):
 
     def __str__(self):
         return self.title
-
