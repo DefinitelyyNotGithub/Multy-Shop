@@ -180,7 +180,7 @@
 
                                             <a class="btn btn-outline-dark btn-square" href=""><i
                                                     class="fa fa-shopping-cart"></i></a>
-                                            {% if product in request.user.favorites %}
+                                            {% if product in request.user.favorites.all or product.id in request.sessions.favorites %}
                                                 <a class="btn btn-outline-dark btn-square"
                                                    href="{% url 'product:add_to_user_favorite_list' product.id %}"><i
                                                         class="fa fa-heart"></i></a>
@@ -235,31 +235,11 @@
                                         <li class="page-item {% if page_obj.number == page %}active{% endif %}"><a
                                                 class="page-link" href="?page=
 
-
-
-
-
-
-
-
-
-
-
                                                 {{ page }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ page }}</a>
                                         </li>
                                     {% endfor %}
-
                                     {% if page_obj.has_next %}
                                         <li class="page-item"><a class="page-link" href="?page=
-
-
-
-
-
-
-
-
-
 
                                                 {{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}
                                                     {% endif %}">Next</a></li>
