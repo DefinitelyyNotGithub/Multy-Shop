@@ -175,7 +175,7 @@
                                         {#                                             src="{{ image.image.url }}" alt="">#}
                                         {#                                    {% endfor %}#}
                                         <img style="width: 291.06px; height: 291.06px" class="img-fluid w-100"
-                                             src="{{ product.images.first.image.url }}" alt="">
+                                             src="{{ product.images.first.get_image_url }}" alt="">
                                         <div class="product-action">
 
                                             <a class="btn btn-outline-dark btn-square" href=""><i
@@ -235,11 +235,13 @@
                                         <li class="page-item {% if page_obj.number == page %}active{% endif %}"><a
                                                 class="page-link" href="?page=
 
+
                                                 {{ page }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ page }}</a>
                                         </li>
                                     {% endfor %}
                                     {% if page_obj.has_next %}
                                         <li class="page-item"><a class="page-link" href="?page=
+
 
                                                 {{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}
                                                     {% endif %}">Next</a></li>

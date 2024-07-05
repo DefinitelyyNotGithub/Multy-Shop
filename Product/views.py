@@ -1,5 +1,5 @@
 from django.views.generic import ListView, TemplateView
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import ProductModel, Category
 from Account.models import User
 from django.http import JsonResponse
@@ -76,6 +76,19 @@ class CategoryProductList(ListView):
         return queryset
 
 
+# class UserFavoriteList(ListView):
+#     template_name = 'product/user_liked_products.html'
+#     context_object_name = "favorite_list"
+#
+#     def get_context_data(self, **kwargs):
+#         context = super(UserFavoriteList, self).get_context_data(**kwargs)
+#         from utils.context_processors import user_favorites_context
+#         context.update(user_favorites_context(self.request))
+#         return context
+#
+#     def get_queryset(self):
+#         return []
+
 class UserFavoriteList(TemplateView):
     template_name = 'product/user_liked_products.html'
 
@@ -100,5 +113,4 @@ def add_to_favorites(request, pk):
             request.session['favorites'].append(product.id)
 
         request.session.modified = True
-    print(user.favorites.all())
-    return JsonResponse({'status': 'successful'})
+    return redirect(request.META.get('HTTP_REFERER', '/'))

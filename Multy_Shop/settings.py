@@ -16,6 +16,8 @@ from os import path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 import django.contrib.messages.middleware
 
+import utils.context_processors
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
@@ -73,6 +75,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'utils.context_processors.user_favorites_context',
 
             ],
         },
@@ -130,6 +133,7 @@ STATICFILES_DIRS = [
     path.join(BASE_DIR, 'static')
 ]
 MEDIA_ROOT = path.join(BASE_DIR, 'media')
+STATIC_ROOT = path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

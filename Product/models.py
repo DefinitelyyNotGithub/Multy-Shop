@@ -2,6 +2,7 @@ import uuid
 from django.db import models
 from django.utils.text import slugify
 from Account.models import User
+from django.templatetags.static import static
 
 
 class Category(models.Model):
@@ -28,15 +29,14 @@ class Size(models.Model):
 
 
 class ProductModel(models.Model):
-
     title = models.CharField(max_length=100, verbose_name="product name")
     product_description = models.TextField(null=True, blank=True, verbose_name="products short description ",
                                            help_text="located below the products name")
     slug = models.SlugField(unique=True, null=True, blank=True)
     price = models.SmallIntegerField()
     available_amount = models.PositiveSmallIntegerField(verbose_name="available amount")
-    color = models.ManyToManyField(Color, related_name="products")
-    size = models.ManyToManyField(Size, related_name="products")
+    color = models.ManyToManyField(Color, related_name="products", null=True, blank=True)
+    size = models.ManyToManyField(Size, related_name="products", null=True, blank=True)
 
     category = models.ManyToManyField(Category, related_name="sub_products")
 
@@ -67,10 +67,23 @@ class ProductModel(models.Model):
 
 class ProductImage(models.Model):
     product = models.ForeignKey(ProductModel, related_name="images", on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='ProductImages')
+    image = models.ImageField(upload_to='ProductImages', null=True, blank=True)
 
     def __str__(self):
         return f'{self.product.title}`s Images'
+
+    def get_image_url(self):
+        if self.image:
+            return self.image.url
+        else:
+            return static('static/img/no_product_image.png')
+
+    # def save(self, *args, **kwargs):
+    #     if not self.image:
+    #         default_image_path = os.path.join(settings.STATIC_ROOT, 'img/no_product_image.png')
+    #         with open(default_image_path, 'rb') as f:
+    #             self.image.save('default_image.png', ContentFile(f.read()), save=False)
+    #     super(ProductImage, self).save(*args, **kwargs)
 
 
 class ProductComment(models.Model):
