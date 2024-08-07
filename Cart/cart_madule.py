@@ -36,7 +36,9 @@ class Cart:
             self.save()
 
     def total(self):
-        return sum(int(item['price']) * int(item['quantity']) for item in self.cart.values())
+        return sum(float(item['price']) * int(item['quantity']) for item in self.cart.values())
+
+
 
     def save(self):
         self.session.modified = True

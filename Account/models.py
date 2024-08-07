@@ -48,7 +48,7 @@ class User(AbstractBaseUser):
     phone = models.CharField(max_length=12, unique=True)
     full_name = models.CharField(max_length=45)
     from Product.models import ProductModel
-    favorites = models.ManyToManyField(ProductModel, related_name="favorites", null=True, blank=True, editable=False)
+    favorites = models.ManyToManyField(ProductModel, related_name="favorites", blank=True, editable=False)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
 
@@ -105,3 +105,19 @@ class UserExtraInfo(models.Model):
 
     def __str__(self):
         return self.user.full_name if self.user.full_name else self.receiver
+
+
+class UserShippingAddress(models.Model):
+    user = models.ForeignKey(User, related_name="shipping_address", on_delete=models.CASCADE, null=True, blank=True)
+    first_name = models.CharField(max_length=40)
+    last_name = models.CharField(max_length=40)
+    email = models.EmailField(unique=True)
+    phone_number = models.CharField(max_length=20)
+    city = models.CharField(max_length=50)
+    state = models.CharField(max_length=50)
+    address = models.TextField()
+    zip_code = models.CharField(max_length=30)
+
+    def __str__(self):
+        return f'{self.first_name}--{self.last_name}'
+

@@ -48,10 +48,10 @@ class ProductModel(models.Model):
     slug = models.SlugField(unique=True, null=True, blank=True)
     price = models.FloatField()
     available_amount = models.PositiveSmallIntegerField(verbose_name="available amount")
-    color = models.ManyToManyField(Color, related_name="products", null=True, blank=True)
-    size = models.ManyToManyField(Size, related_name="products", null=True, blank=True)
+    color = models.ManyToManyField(Color, related_name="products", blank=True)
+    size = models.ManyToManyField(Size, related_name="products", blank=True)
 
-    category = models.ManyToManyField(Category, related_name="sub_products")
+    category = models.ManyToManyField(Category, related_name="sub_products", blank=True)
 
     short_point_1 = models.CharField(max_length=100, null=True, blank=True, verbose_name="short point 1")
     short_point_2 = models.CharField(max_length=100, null=True, blank=True, verbose_name="short point 2")

@@ -21,6 +21,12 @@
     <!-- Shop Start -->
 
 
+    {% if not favorites_ %}
+        <img class="center" src="{% static 'img/product_not_found.webp' %}">
+        <center><h3>No Favorite Product found !</h3></center>
+    {% endif %}
+
+
     <div class="container-fluid">
         <div class="row px-xl-5">
 

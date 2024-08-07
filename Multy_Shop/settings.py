@@ -79,6 +79,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'utils.context_processors.user_favorites_context',
                 'utils.context_processors.user_recent_viewed',
+                'utils.context_processors.cart_count',
 
             ],
         },

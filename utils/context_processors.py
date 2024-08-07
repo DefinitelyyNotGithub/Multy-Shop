@@ -34,3 +34,10 @@ def user_recent_viewed(request):
 def site_general_info(request):
     from Home.models import SiteContact
     return {'site_general_info': SiteContact.objects.last()}
+
+
+def cart_count(request):
+    from Cart.cart_madule import Cart
+    cart = Cart(request)
+    len_list = [id_ for id_ in cart]
+    return {'cart_len': len(len_list)}
