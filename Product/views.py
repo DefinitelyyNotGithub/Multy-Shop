@@ -1,13 +1,11 @@
-from django.views.generic import ListView, TemplateView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, TemplateView, FormView, CreateView
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import ProductModel, Category
-from Account.models import User
+from .models import ProductModel, Category, DiscountPrice, RecentlyViewedProducts
 from django.http import JsonResponse
+from .forms import UserReviewForm
+from django.db.models import Q
 
-
-# class ProductList(ListView):
-#     template_name = 'product/product_list.html'
-#     model = ProductModel
 
 class NavBarView(TemplateView):
     template_name = 'includes/NavBar.html'
@@ -18,20 +16,27 @@ class NavBarView(TemplateView):
         return context
 
 
+# class ProductListView(ListView):
+#     template_name = 'product/product_list.html'
+#     paginate_by = 20
+#     context_object_name = 'obj'
+#
+#     def get_queryset(self):
+#         pass
+
+
 class ProductListView(ListView):
-    template_name = 'product/product_list.html'
-    paginate_by = 20
-    context_object_name = 'obj'
-
-    def get_queryset(self):
-        pass
-
-
-class CategoryProductList(ListView):
     template_name = 'product/product_list.html'
     model = ProductModel
     paginate_by = 33
     context_object_name = 'obj'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(ProductListView, self).get_context_data(**kwargs)
+        context['global_off'] = DiscountPrice.objects.filter(apply_to_all_products=True, is_active=True).last()
+        active_discounts = DiscountPrice.objects.filter(is_active=True)
+        context['active_discounts'] = ProductModel.objects.filter(discount__in=active_discounts)
+        return context
 
     def get_queryset(self, **kwargs):
 
@@ -94,10 +99,11 @@ class UserFavoriteList(TemplateView):
 
 
 def add_to_favorites(request, pk):
+    from Account.models import User
     product = get_object_or_404(ProductModel, id=pk)
-    user = request.user
 
     if request.user.is_authenticated:
+        user = User.objects.get(id=request.user.id)
         if product in user.favorites.all():
             user.favorites.remove(product)
         else:
@@ -114,3 +120,39 @@ def add_to_favorites(request, pk):
 
         request.session.modified = True
     return redirect(request.META.get('HTTP_REFERER', '/'))
+
+
+class ProductDetail(ListView, FormView):
+    template_name = 'product/product_detail.html'
+    model = ProductModel
+    context_object_name = "product"
+    form_class = UserReviewForm
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        product = ProductModel.objects.get(id=self.kwargs.get('pk'))
+        product.views = product.views + 1
+        product.save()
+        if self.request.user.is_authenticated:
+            RecentlyViewedProducts.add_view(self.request.user, product)
+
+        context = super(ProductDetail, self).get_context_data(**kwargs)
+        active_discounts = DiscountPrice.objects.filter(is_active=True)
+        context['active_discounts'] = ProductModel.objects.filter(discount__in=active_discounts)
+
+        product_cat = product.category.all()
+        context['same_category_product'] = ProductModel.objects.filter(category__in=product_cat).order_by(
+            '-sell_count', '-views').distinct()[:8]
+
+        return context
+
+    def get_queryset(self, **kwargs):
+        product = ProductModel.objects.get(id=self.kwargs.get('pk'))
+        return product
+
+    def form_valid(self, form, **kwargs):
+        form = form.save(commit=False)
+        form.product = get_object_or_404(ProductModel, id=self.kwargs.get('pk'))
+        form.autor = self.request.user
+        form.save()
+
+        return redirect('product:Product_detail', pk=self.kwargs.get('pk'))

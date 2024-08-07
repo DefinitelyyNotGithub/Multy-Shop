@@ -44,14 +44,17 @@ class User(AbstractBaseUser):
         blank=True,
         null=True
     )
+
     phone = models.CharField(max_length=12, unique=True)
     full_name = models.CharField(max_length=45)
+    from Product.models import ProductModel
+    favorites = models.ManyToManyField(ProductModel, related_name="favorites", null=True, blank=True, editable=False)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
 
     objects = UserManager()
 
-    USERNAME_FIELD = "phone"  ## this used to be email
+    USERNAME_FIELD = "phone"  # => it used to be email
     REQUIRED_FIELDS = []
 
     def __str__(self):
@@ -91,3 +94,14 @@ class RegisterModel(models.Model):
         )
         verbose_name = " unauthenticated user"
         verbose_name_plural = " unauthenticated users"
+
+
+class UserExtraInfo(models.Model):
+    user = models.ForeignKey(User, related_name="extra_info", on_delete=models.CASCADE)
+    receiver = models.CharField(max_length=100, verbose_name="receiver name ")
+    phone = models.CharField(max_length=12)
+    address = models.TextField()
+    post_code = models.CharField(max_length=40)
+
+    def __str__(self):
+        return self.user.full_name if self.user.full_name else self.receiver

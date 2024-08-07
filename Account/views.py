@@ -27,6 +27,12 @@ class UserLogInView(View):
             user = authenticate(username=Phone_number, password=password)
             if user is not None:
                 login(request, user)
+                if request.session['favorites']:
+                    for item in request.session['favorites']:
+                        pass
+
+                if request.get('next'):
+                    return redirect(request.get('next'))
                 return redirect('Home:home')
             else:
                 form.add_error("__all__", "phone number or password is wrong")
@@ -37,7 +43,7 @@ def Logout(request):
     if request.method == "GET":
         if request.user.is_authenticated:
             logout(request)
-            return redirect('Home:home')
+            return redirect('/')
 
 
 class Register(View):

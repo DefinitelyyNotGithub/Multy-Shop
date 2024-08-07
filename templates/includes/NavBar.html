@@ -13,18 +13,21 @@
                         {% if not category.parent %}
                             {% if category.subs.all %}
                                 <div class="nav-item dropdown dropright">
-                                    <a href="{% url 'product:category_product_list' category.slug %}" class="nav-link dropdown-toggle"
+                                    <a href="{% url 'product:category_product_list' category.slug %}"
+                                       class="nav-link dropdown-toggle"
                                        data-toggle="dropdown">{{ category.title }}
                                         <i
                                                 class="fa fa-angle-right float-right mt-1"></i></a>
                                     <div class="dropdown-menu position-absolute rounded-0 border-0 m-0">
                                         {% for sub_cat in category.subs.all %}
-                                            <a href="{% url 'product:category_product_list' sub_cat.slug %}" class="dropdown-item">{{ sub_cat.title }}</a>
+                                            <a href="{% url 'product:category_product_list' sub_cat.slug %}"
+                                               class="dropdown-item">{{ sub_cat.title }}</a>
                                         {% endfor %}
                                     </div>
                                 </div>
                             {% else %}
-                                <a href="{% url 'product:category_product_list' category.slug %}" class="nav-item nav-link">{{ category.title }}</a>
+                                <a href="{% url 'product:category_product_list' category.slug %}"
+                                   class="nav-item nav-link">{{ category.title }}</a>
                             {% endif %}
                         {% endif %}
                     {% endfor %}
@@ -42,9 +45,14 @@
                 </button>
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto py-0">
-                        <a href="index.html" class="nav-item nav-link">Home</a>
-                        <a href="{% url 'product:product_list' %}" class="nav-item nav-link">Shop</a>
-                        <a href="detail.html" class="nav-item nav-link">Shop Detail</a>
+                        <a href="{% url 'Home:home' %}"
+                           class="nav-item nav-link {% if request.resolver_match.url_name == 'home' %} active{% endif %}">Home</a>
+                        <a href="{% url 'product:product_list' %}"
+                           class="nav-item nav-link {% if request.resolver_match.url_name == 'product_list' %} active{% endif %}">Shop</a>
+                        <a href="
+                                {% if recent_viewed.0 %}{% url 'product:Product_detail' recent_viewed.0.id %}{% else %}{% url 'product:product_list' %}{% endif %} "
+                           class="nav-item nav-link {% if request.resolver_match.url_name == 'Product_detail' %}active{% endif %}">Shop
+                            Detail</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages <i
                                     class="fa fa-angle-down mt-1"></i></a>
@@ -53,7 +61,8 @@
                                 <a href="checkout.html" class="dropdown-item">Checkout</a>
                             </div>
                         </div>
-                        <a href="contact.html" class="nav-item nav-link active">Contact</a>
+                        <a href="{% url 'Home:contact' %}"
+                           class="nav-item nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}">Contact</a>
                     </div>
                     <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
                         <a href="{% url 'product:user_favorite_list' %}" class="btn px-0">
@@ -61,7 +70,7 @@
                             <span class="badge text-secondary border border-secondary rounded-circle"
                                   style="padding-bottom: 2px;">{{ fav_len }}</span>
                         </a>
-                        <a href="" class="btn px-0 ml-3">
+                        <a href="{% url 'cart:cart' %}" class="btn px-0 ml-3">
                             <i class="fas fa-shopping-cart text-primary"></i>
                             <span class="badge text-secondary border border-secondary rounded-circle"
                                   style="padding-bottom: 2px;">0</span>

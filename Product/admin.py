@@ -11,6 +11,7 @@ from .models import (
     DiscountPrice,
     ProductComment,
     SiteTitleBanner,
+    RecentlyViewedProducts,
 )
 
 
@@ -28,7 +29,7 @@ class CategoryAmin(admin.ModelAdmin):
 
 @admin.register(ProductModel)
 class ProductModelAdmin(admin.ModelAdmin):
-    list_display = ['title', 'available_amount', 'price']
+    list_display = ['title', 'available_amount', 'price', 'views']
     list_filter = ['available_amount', 'add_date', 'last_update']
     inlines = [ProductImageInline, ]
     search_fields = ['title', ]
@@ -42,8 +43,16 @@ class ProductCommentAdmin(admin.ModelAdmin):
     list_filter = ['spread_date', ]
 
 
+@admin.register(DiscountPrice)
+class DiscountModelAdmin(admin.ModelAdmin):
+    list_display = ['name', 'discount_rate']
+    search_fields = ['discount_rate', 'name']
+    autocomplete_fields = ['product']
+    filter_horizontal = ['product']
+
+
 admin.site.register(Size)
 admin.site.register(Color)
 admin.site.register(ProductEAV)
-admin.site.register(DiscountPrice)
 admin.site.register(SiteTitleBanner)
+admin.site.register(RecentlyViewedProducts)

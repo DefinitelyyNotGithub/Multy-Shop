@@ -16,6 +16,7 @@ from os import path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 import django.contrib.messages.middleware
 
+import Cart.apps
 import utils.context_processors
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -44,11 +45,11 @@ INSTALLED_APPS = [
     'Account.apps.AccountConfig',
     'Home.apps.HomeConfig',
     'Product.apps.ProductConfig',
-    'product_detail.apps.ProductDetailConfig',
+    'Cart.apps.CartConfig',
+
+    # other
     'django_render_partial',
-
-
-
+    'django_social_share',
 ]
 
 MIDDLEWARE = [
@@ -71,11 +72,13 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'utils.context_processors.user_favorites_context',
+                'utils.context_processors.user_recent_viewed',
 
             ],
         },

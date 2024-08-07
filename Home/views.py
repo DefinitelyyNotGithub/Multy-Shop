@@ -3,17 +3,32 @@ from django.views import View
 from django.views.generic import TemplateView, CreateView, ListView
 from .models import Contact, AboutUs_Model, FAQs_model
 from .forms import ContactForm
-from Product.models import ProductModel, SiteTitleBanner, Category
+from Product.models import ProductModel, SiteTitleBanner, Category, DiscountPrice, RecentlyViewedProducts
 from django.db.models import Q
+
 
 class HomeView(TemplateView):
     template_name = 'Home/index.html'
 
     def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
-        context['category'] = Category.objects.all()
+
+        if len(Category.objects.filter(on_first_page=True)) >= 12:
+            twelve_cats = Category.objects.filter(on_first_page=True)[:12]
+        else:
+            twelve_cats = Category.objects.all()[:12]
+        context['featured_products'] = ProductModel.objects.order_by('-sell_count').distinct()[:8]
+        context['category'] = twelve_cats
         context['banner'] = SiteTitleBanner.objects.all()
         context['product'] = ProductModel.objects.all()
+        context['global_off'] = DiscountPrice.objects.filter(apply_to_all_products=True, is_active=True).last()
+
+        # if self.request.is_authenticated:
+        #     recently_viewed = RecentlyViewedProducts.objects.filter(user=self.request.user).order_by('-date').dis[:8]
+        #     context['recent_viewed'] = [item.product for item in recently_viewed]
+
+        active_discounts = DiscountPrice.objects.filter(is_active=True)
+        context['active_discounts'] = ProductModel.objects.filter(discount__in=active_discounts)
         return context
 
 

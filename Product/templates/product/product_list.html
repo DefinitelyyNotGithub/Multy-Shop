@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
-{% load custom_tags %}
+
 
 {% block contant %}
+
+
 
     <!-- Shop Start -->
     <div class="container-fluid">
@@ -19,18 +21,19 @@
                     </h5>
                     <br>
 
-
                     <div class="bg-light p-4 mb-30">
 
 
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <label for="price-1">Min</label>
-                            <input type="number" name="min_price" min="0" id="price-1">
+                            <input type="number" name="min_price" min="0" id="price-1"
+                                   {% if request.GET.min_price %}value="{{ request.GET.min_price }}"{% endif %}>
 
                         </div>
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <label for="price-2">Max</label>
-                            <input type="number" name="max_price" min="0" id="price-2">
+                            <input type="number" name="max_price" min="0" id="price-2"
+                                   {% if request.GET.max_price %}value="{{ request.GET.max_price }}"{% endif %}>
 
                         </div>
                     </div>
@@ -42,29 +45,35 @@
 
                     <div class="bg-light p-4 mb-30">
 
+
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" name="color" value="black" class="custom-control-input" id="color-1">
+                            <input type="checkbox" name="color" value="black" class="custom-control-input" id="color-1"
+                                   {% if request.GET.color == 'black' %}checked{% endif %}>
                             <label class="custom-control-label" for="color-1">Black</label>
-                            <span class="badge border font-weight-normal">12</span>
+                            <span class="badge border font-weight-normal">100</span>
 
                         </div>
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" name="color" value="white" class="custom-control-input" id="color-2">
+                            <input type="checkbox" name="color" value="white" class="custom-control-input" id="color-2"
+                                   {% if request.GET.color == 'white' %}checked{% endif %}>
                             <label class="custom-control-label" for="color-2">White</label>
                             <span class="badge border font-weight-normal">295</span>
                         </div>
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" name="color" value="red" class="custom-control-input" id="color-3">
+                            <input type="checkbox" name="color" value="red" class="custom-control-input" id="color-3"
+                                   {% if request.GET.color == 'red' %}checked{% endif %}>
                             <label class="custom-control-label" for="color-3">Red</label>
                             <span class="badge border font-weight-normal">246</span>
                         </div>
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" name="color" value="blue" class="custom-control-input" id="color-4">
+                            <input type="checkbox" name="color" value="blue" class="custom-control-input" id="color-4"
+                                   {% if request.GET.color == 'blue' %}checked{% endif %}>
                             <label class="custom-control-label" for="color-4">Blue</label>
                             <span class="badge border font-weight-normal">145</span>
                         </div>
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                            <input type="checkbox" class="custom-control-input" id="color-5">
+                            <input type="checkbox" name="color" value="green" class="custom-control-input" id="color-5"
+                                   {% if request.GET.color == 'green' %}checked{% endif %}>
                             <label class="custom-control-label" for="color-5">Green</label>
                             <span class="badge border font-weight-normal">168</span>
                         </div>
@@ -78,27 +87,32 @@
                     <div class="bg-light p-4 mb-30">
                         <form>
                             <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="checkbox" name="size" value="XS" class="custom-control-input" id="size-1">
+                                <input type="checkbox" name="size" value="XS" class="custom-control-input" id="size-1"
+                                       {% if request.GET.size == 'XS' %}checked{% endif %}>
                                 <label class="custom-control-label" for="size-1">XS</label>
                                 <span class="badge border font-weight-normal">150</span>
                             </div>
                             <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="checkbox" name="size" value="S" class="custom-control-input" id="size-2">
+                                <input type="checkbox" name="size" value="S" class="custom-control-input" id="size-2"
+                                       {% if request.GET.size == 'S' %}checked{% endif %}>
                                 <label class="custom-control-label" for="size-2">S</label>
                                 <span class="badge border font-weight-normal">295</span>
                             </div>
                             <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="checkbox" name="size" value="M" class="custom-control-input" id="size-3">
+                                <input type="checkbox" name="size" value="M" class="custom-control-input" id="size-3"
+                                       {% if request.GET.size == 'M' %}checked{% endif %}>
                                 <label class="custom-control-label" for="size-3">M</label>
                                 <span class="badge border font-weight-normal">246</span>
                             </div>
                             <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="checkbox" name="size" value="L" class="custom-control-input" id="size-4">
+                                <input type="checkbox" name="size" value="L" class="custom-control-input" id="size-4"
+                                       {% if request.GET.size == 'L' %}checked{% endif %}>
                                 <label class="custom-control-label" for="size-4">L</label>
                                 <span class="badge border font-weight-normal">145</span>
                             </div>
                             <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                                <input type="checkbox" name="size" value="XL" class="custom-control-input" id="size-5">
+                                <input type="checkbox" name="size" value="XL" class="custom-control-input" id="size-5"
+                                       {% if request.GET.size == 'XL' %}checked{% endif %}>
                                 <label class="custom-control-label" for="size-5">XL</label>
                                 <span class="badge border font-weight-normal">168</span>
                             </div>
@@ -175,12 +189,13 @@
                                         {#                                             src="{{ image.image.url }}" alt="">#}
                                         {#                                    {% endfor %}#}
                                         <img style="width: 291.06px; height: 291.06px" class="img-fluid w-100"
-                                             src="{{ product.images.first.get_image_url }}" alt="">
+                                             src="{{ product.product_image }}"
+                                             alt="">
                                         <div class="product-action">
 
                                             <a class="btn btn-outline-dark btn-square" href=""><i
                                                     class="fa fa-shopping-cart"></i></a>
-                                            {% if product in request.user.favorites.all or product.id in request.sessions.favorites %}
+                                            {% if product in request.user.favorites.all or product.id in request.session.favorites %}
                                                 <a class="btn btn-outline-dark btn-square"
                                                    href="{% url 'product:add_to_user_favorite_list' product.id %}"><i
                                                         class="fa fa-heart"></i></a>
@@ -191,19 +206,21 @@
                                             {% endif %}
                                             <a class="btn btn-outline-dark btn-square" href=""><i
                                                     class="fa fa-sync-alt"></i></a>
-                                            <a class="btn btn-outline-dark btn-square" href=""><i
+                                            <a class="btn btn-outline-dark btn-square" href="{% url 'product:Product_detail' product.id %}"><i
                                                     class="fa fa-search"></i></a>
                                         </div>
                                     </div>
                                     <div class="text-center py-4">
                                         <a class="h6 text-decoration-none text-truncate" href="">{{ product.title }}</a>
                                         <div class="d-flex align-items-center justify-content-center mt-2">
-                                            <h5>${{ product|price }}</h5>
+                                            <h5>${{ product.product_price }}</h5>
 
-                                            {% if product.discount.all %}
-                                                <h6 class="text-muted ml-2">
-                                                    <del>${{ product.price }}</del>
-                                                </h6>
+                                            {% if product.discount.all or global_off %}
+                                                {% if product in active_discounts.all %}
+                                                    <h6 class="text-muted ml-2">
+                                                        <del>${{ product.price }}</del>
+                                                    </h6>
+                                                {% endif %}
                                             {% endif %}
 
                                         </div>

@@ -2,10 +2,8 @@ from django.contrib import admin
 from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from Account.models import User, RegisterModel
-from . forms import UserCreationForm, UserChangeForm
-
-
+from Account.models import User, RegisterModel, UserExtraInfo
+from .forms import UserCreationForm, UserChangeForm
 
 
 class UserAdmin(BaseUserAdmin):
@@ -19,7 +17,7 @@ class UserAdmin(BaseUserAdmin):
     list_display = ["email", "is_admin"]
     list_filter = ["is_admin"]
     fieldsets = [
-        (None, {"fields": ["email", "password"]}),
+        (None, {"fields": ["email", "password", "full_name"]}),
         ("Permissions", {"fields": ["is_admin"]}),
     ]
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
@@ -40,6 +38,7 @@ class UserAdmin(BaseUserAdmin):
 
 # Now register the new UserAdmin...
 admin.site.register(User, UserAdmin)
+admin.site.register(UserExtraInfo)
 # ... and, since we're not using Django's built-in permissions,
 # unregister the Group model from admin.
 admin.site.unregister(Group)

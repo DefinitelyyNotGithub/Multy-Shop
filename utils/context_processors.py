@@ -2,18 +2,35 @@ from django.shortcuts import get_object_or_404
 
 
 def user_favorites_context(request):
-    favorite_list: list = []
+    product_list: list = []
 
     if request.user.is_authenticated:
-        favorite_list.append(request.user.favorites.all())
+        from Account.models import User
+        user = User.objects.get(id=request.user.id)
+        product_list = user.favorites.all()
 
-    if 'favorites' in request.session:
-        favorite = request.session['favorites']
-        for fav in favorite:
+    else:
+        try:
             from Product.models import ProductModel
-            product = get_object_or_404(ProductModel, id=fav)
-            favorite_list.append(product)
-    print(favorite_list)
+            if request.session['favorites']:
+                for id in request.session['favorites']:
+                    product_list.append(ProductModel.objects.get(id=id))
+        except:
+            pass
 
-    return {'favorites_': favorite_list, 'fav_len': len(favorite_list[0])}
+    return {'favorites_': product_list, 'fav_len': len(product_list)}
 
+
+def user_recent_viewed(request):
+    if request.user.is_authenticated:
+        from Product.models import RecentlyViewedProducts
+        recently_viewed = RecentlyViewedProducts.objects.filter(user=request.user).order_by('-date').distinct()[:8]
+        recent_viewed = [item.product for item in recently_viewed]
+        return {"recent_viewed": recent_viewed}
+    else:
+        return ''
+
+
+def site_general_info(request):
+    from Home.models import SiteContact
+    return {'site_general_info': SiteContact.objects.last()}
