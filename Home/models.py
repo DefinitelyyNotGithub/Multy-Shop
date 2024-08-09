@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 from django.db import models
 
 
@@ -19,14 +21,16 @@ class Contact(models.Model):
 
 
 class SiteContact(models.Model):
-    phone_number = models.CharField(max_length=20)
-    email_address = models.EmailField()
-    address = models.TextField()
+    site_description = models.TextField(null=True)
+    phone_number = models.CharField(max_length=20, blank=True)
+    email_address = models.EmailField(blank=True)
+    address = models.TextField(blank=True)
 
-    insta_account = models.CharField(max_length=100)
-    linkin_account = models.CharField(max_length=100)
-    facebook = models.CharField(max_length=100)
-    x_account = models.CharField(max_length=100)
+    insta_account = models.URLField("Instagram URL", blank=True, max_length=255)
+    linkin_account = models.URLField("Linkin URL", blank=True, max_length=255)
+    facebook = models.URLField("Facebook URL", blank=True, max_length=255)
+    x_account = models.URLField("X URL", blank=True, max_length=255)
+    twitter_account = models.URLField("Tweeter URL", blank=True, max_length=255)
 
     def __str__(self):
         return f'contact information id:{self.id}'
@@ -50,3 +54,10 @@ class FAQs_model(models.Model):
 
     def __str__(self):
         return self.question
+
+
+class NewsLetter(models.Model):
+    email = models.EmailField(unique=True)
+
+    def __str__(self):
+        return self.email

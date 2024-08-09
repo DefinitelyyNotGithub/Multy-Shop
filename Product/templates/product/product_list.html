@@ -3,9 +3,6 @@
 
 
 {% block contant %}
-
-
-
     <!-- Shop Start -->
     <div class="container-fluid">
         <div class="row px-xl-5">
@@ -177,7 +174,8 @@
                     </div>
                     {% if not obj %}
 
-                        <img class="center" src="{% static 'img/product_not_found.webp' %}">
+                        <small><img style="size: 20px" class="center"
+                                    src="{% static 'img/product_not_found.webp' %}"></small>
 
                     {% else %}
                         {% for product in obj %}
@@ -206,7 +204,8 @@
                                             {% endif %}
                                             <a class="btn btn-outline-dark btn-square" href=""><i
                                                     class="fa fa-sync-alt"></i></a>
-                                            <a class="btn btn-outline-dark btn-square" href="{% url 'product:Product_detail' product.id %}"><i
+                                            <a class="btn btn-outline-dark btn-square"
+                                               href="{% url 'product:Product_detail' product.id %}"><i
                                                     class="fa fa-search"></i></a>
                                         </div>
                                     </div>
@@ -253,11 +252,13 @@
                                                 class="page-link" href="?page=
 
 
+
                                                 {{ page }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ page }}</a>
                                         </li>
                                     {% endfor %}
                                     {% if page_obj.has_next %}
                                         <li class="page-item"><a class="page-link" href="?page=
+
 
 
                                                 {{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}

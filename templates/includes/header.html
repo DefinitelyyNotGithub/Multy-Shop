@@ -1,3 +1,69 @@
+{% if messages %}
+    <div class="my-message {% for message in messages %} my-{{ message.tags }} {% endfor %}" id="message-box">
+        {% for message in messages %}
+            <center>{{ message }}</center>
+        {% endfor %}
+    </div>
+    <script>
+        setTimeout(function () {
+            document.getElementById('message-box').style.display = 'none';
+        }, 3000); // Hide after 3 seconds
+    </script>
+    <style>
+        #message-box {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            border-radius: 5px;
+            z-index: 1000; /* Ensure it is above other content */
+            display: block; /* Ensure the message box is displayed initially */
+            width: calc(100% - 40px); /* Full width minus padding */
+            max-width: 80%; /* Maximum width for responsiveness */
+            box-sizing: border-box; /* Includes padding and border in the element's total width */
+        }
+
+        /* Base styles for all messages */
+        .my-message {
+            color: #fff; /* Default text color */
+            font-size: 16px;
+        }
+
+        /* Warning style */
+        .my-warning {
+            background-color: #f39c12; /* Warning background color */
+            border: 1px solid #e67e22; /* Warning border color */
+        }
+
+        /* Success style */
+        .my-success {
+            background-color: #2ecc71; /* Success background color */
+            border: 1px solid #27ae60; /* Success border color */
+        }
+
+        /* Error style */
+        .my-error {
+            background-color: #e74c3c; /* Error background color */
+            border: 1px solid #c0392b; /* Error border color */
+        }
+
+        /* Optional: Adjust width for larger screens */
+        @media (min-width: 768px) {
+            #message-box {
+                width: calc(80% - 40px); /* Adjust for larger screens */
+            }
+        }
+    </style>
+{% endif %}
+
+
+
+
+
+
+
+
 <div class="container-fluid">
     <div class="row bg-secondary py-1 px-xl-5">
         <div class="col-lg-6 d-none d-lg-block">

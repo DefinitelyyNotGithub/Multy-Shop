@@ -5,6 +5,7 @@ from Product.models import ProductModel
 from .cart_madule import Cart
 # from .models import Order, OrderedProduct
 from . forms import AddressForm
+from django.contrib import messages
 
 
 class CartView(ListView):
@@ -22,6 +23,7 @@ class AddToCart(View):
         color, size, quantity = request.POST.get('color'), request.POST.get('size'), request.POST.get('quantity')
         cart = Cart(request)
         cart.add_to_cart(product, color, size, quantity)
+        messages.success(request, "Product added to Cart")
         return redirect(request.META.get('HTTP_REFERER', '/'))
 
 

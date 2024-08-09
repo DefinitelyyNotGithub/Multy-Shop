@@ -88,11 +88,13 @@ class ProductModel(models.Model):
         try:
             global_offer = DiscountPrice.objects.filter(apply_to_all_products=True, is_active=True).last()
             product_price = self.price - (self.price * global_offer.discount_rate / 100)
+            print(product_price)
             return product_price
         except:
             try:
                 discount = DiscountPrice.objects.get(product=self, is_active=True)
                 product_price = self.price - (self.price * discount.discount_rate / 100)
+
                 return product_price
             except:
                 product_price = self.price

@@ -1,8 +1,9 @@
 from django.contrib import admin
 from .models import (
     Contact,
-    SiteContact,
     FAQs_model,
+    NewsLetter,
+    SiteContact,
     AboutUs_Model,
 )
 
@@ -15,3 +16,4 @@ class ContactAdminModel(admin.ModelAdmin):
 admin.site.register(SiteContact)
 admin.site.register(AboutUs_Model)
 admin.site.register(FAQs_model)
+admin.site.register(NewsLetter)

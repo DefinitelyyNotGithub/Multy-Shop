@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import TemplateView, CreateView, ListView
-from .models import Contact, AboutUs_Model, FAQs_model
+from .models import Contact, AboutUs_Model, FAQs_model, NewsLetter
 from .forms import ContactForm
 from Product.models import ProductModel, SiteTitleBanner, Category, DiscountPrice, RecentlyViewedProducts
 from django.db.models import Q
+from django.contrib import messages
 
 
 class HomeView(TemplateView):
@@ -71,3 +72,15 @@ def search(request):
         return render(request, 'product/product_list.html', {'obj': searched})
     else:
         return render(request, 'product_not_found.html', {})
+
+
+class NewsLetterView(View):
+    def post(self, request):
+        email = request.POST.get('email')
+        if NewsLetter.objects.filter(email=email).exists():
+            messages.warning(request, "this email is registered before ")
+            return redirect(request.META.get("HTTP_REFERER", '/'))
+
+        NewsLetter.objects.create(email=email)
+        messages.success(request, "you will stay in touch :)")
+        return redirect(request.META.get("HTTP_REFERER", '/'))

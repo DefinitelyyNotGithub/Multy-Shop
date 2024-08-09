@@ -71,7 +71,8 @@ class ProductListView(ListView):
             elif sorted_by == 'popularity':
                 queryset = queryset.order_by('-sell_count')
             elif sorted_by == 'off_price':
-                queryset = queryset.filter(discount=True)
+                queryset = queryset.filter(discount__is_active=True).order_by('-discount__discount_rate')
+
             elif sorted_by == 'all':
                 queryset = queryset
 

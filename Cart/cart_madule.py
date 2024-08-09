@@ -14,7 +14,7 @@ class Cart:
         for item in cart.values():
             product = ProductModel.objects.get(id=int(item['product_id']))
             item['product'] = product
-            item['total'] = int(product.product_price()) * int(item['quantity'])
+            item['total'] = float(product.product_price()) * int(item['quantity'])
             item['uid'] = self.unique_id_generator(product, item['color'], item['size'])
             yield item
 
@@ -26,7 +26,8 @@ class Cart:
         unique_id = self.unique_id_generator(product, color, size)
         if unique_id not in self.cart:
             self.cart[unique_id] = {'product_id': product.id, 'color': color, 'size': size, 'quantity': 0,
-                                    'price': str(product.price)}
+                                    'price': str(product.product_price())}
+
         self.cart[unique_id]['quantity'] += int(quantity)
         self.save()
 
@@ -37,8 +38,6 @@ class Cart:
 
     def total(self):
         return sum(float(item['price']) * int(item['quantity']) for item in self.cart.values())
-
-
 
     def save(self):
         self.session.modified = True
