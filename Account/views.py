@@ -3,8 +3,13 @@ import uuid
 import ghasedakpack
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, reverse
+from django.urls import reverse_lazy
 from django.views import View
-from .forms import UserLogInForm, InitialUserCreationForm, ValidationCodeForm
+from django.views.generic import TemplateView, FormView, CreateView
+
+from .forms import UserLogInForm, InitialUserCreationForm, ValidationCodeForm, UserProfileShippingSettingsForm, \
+    UserProfileForm
+
 from .models import User, RegisterModel
 from random import randint
 
@@ -95,3 +100,28 @@ class CodeValidation(View):
                 obj.save()
                 return redirect('/')
         return render(request, 'Account/validationcode.html', {'form': form})
+
+
+class AddShippingAddress(CreateView):
+    template_name = 'Account/add_shipping_address.html'
+    form_class = UserProfileShippingSettingsForm
+
+    def form_valid(self, form):
+        form = form.save(commit=False)
+        form.user = self.request.user
+        form.save()
+        return redirect(self.request.META.get('HTTP_REFERER', '/'))
+
+
+class UserProfile(CreateView):
+    template_name = 'Account/user-profile.html'
+    form_class = UserProfileForm
+    success_url = reverse_lazy('Home:home')
+
+    def get_object(self, queryset=None):
+        return self.request.user.profile
+
+    def form_valid(self, form):
+        form = form.save(commit=False)
+        form.user = self.request.user
+        form.save()

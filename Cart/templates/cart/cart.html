@@ -20,7 +20,9 @@
     {% if not cart_len %}
         <img class="center" src="{% static 'img/product_not_found.webp' %}">
         <center><h3>Your Cart is Empty ! !</h3></center>
-        <a href="{% url 'product:product_list' %}"><center><h3 style="color: #4ac1f7">Shop Now</h3></center></a>
+        <a href="{% url 'product:product_list' %}">
+            <center><h3 style="color: #4ac1f7">Shop Now</h3></center>
+        </a>
     {% else %}
 
 
@@ -78,11 +80,15 @@
                     </table>
                 </div>
                 <div class="col-lg-4">
-                    <form class="mb-30" action="">
+                    <form class="mb-30" method=post action="{% url 'cart:apply_coupon' %}">
+                        {% csrf_token %}
                         <div class="input-group">
-                            <input type="text" class="form-control border-0 p-4" placeholder="Coupon Code">
+                            <input {% if request.GET.coupon %}value="{{ request.GET.coupon }}"{% endif %} name="coupon" type="text"
+                                   class="form-control border-0 p-4" placeholder="Coupon Code">
                             <div class="input-group-append">
-                                <button class="btn btn-primary">Apply Coupon</button>
+                                <button {% if request.GET.coupon %}disabled{% endif %} type="submit"
+                                        class="btn btn-primary">Apply Coupon
+                                </button>
                             </div>
                         </div>
                     </form>

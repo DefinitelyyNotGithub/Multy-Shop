@@ -31,13 +31,15 @@
 
                         </select>
 
+
                         <div class="col-md-12">
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" id="shipto">
                                 <label class="custom-control-label" for="shipto" data-toggle="collapse"
                                        data-target="#shipping-address">Ship to different address</label>
                             </div>
-                        </div><br>
+                        </div>
+                        <br>
                         <div class="collapse mb-5" id="shipping-address">
                             <h5 class="section-title position-relative text-uppercase mb-3"><span
                                     class="bg-secondary pr-3">Shipping Address</span></h5>
@@ -78,10 +80,8 @@
                                 </div>
                             </div>
                         </div>
-                        </div>
 
                     {% else %}
-
                         <div class="bg-light p-30 mb-5">
                             <div class="row">
                                 <div class="col-md-6 form-group">
@@ -119,6 +119,47 @@
                             </div>
                         </div>
                     {% endif %}
+                </div>
+
+                {#                    {% else %}#}
+                {##}
+                {#                        <div class="bg-light p-30 mb-5">#}
+                {#                            <div class="row">#}
+                {#                                <div class="col-md-6 form-group">#}
+                {#                                    <label>First Name</label>#}
+                {#                                    {{ form.first_name }}#}
+                {#                                </div>#}
+                {#                                <div class="col-md-6 form-group">#}
+                {#                                    <label>Last Name</label>#}
+                {#                                    {{ form.last_name }}#}
+                {#                                </div>#}
+                {#                                <div class="col-md-6 form-group">#}
+                {#                                    <label>E-mail</label>#}
+                {#                                    {{ form.email }}#}
+                {#                                </div>#}
+                {#                                <div class="col-md-6 form-group">#}
+                {#                                    <label>Mobile Number</label>#}
+                {#                                    {{ form.phone_number }}#}
+                {#                                </div>#}
+                {#                                <div class="col-md-6 form-group">#}
+                {#                                    <label>city</label>#}
+                {#                                    {{ form.city }}#}
+                {#                                </div>#}
+                {#                                <div class="col-md-6 form-group">#}
+                {#                                    <label>State</label>#}
+                {#                                    {{ form.state }}#}
+                {#                                </div>#}
+                {#                                <div class="col-md-6 form-group">#}
+                {#                                    <label>Address</label>#}
+                {#                                    {{ form.address }}#}
+                {#                                </div>#}
+                {#                                <div class="col-md-6 form-group">#}
+                {#                                    <label>ZIP Code</label>#}
+                {#                                    {{ form.zip_code }}#}
+                {#                                </div>#}
+                {#                            </div>#}
+                {#                        </div>#}
+                {#                    {% endif %}#}
 
 
                 <div class="col-lg-4">
@@ -160,21 +201,30 @@
                         <div class="bg-light p-30">
                             <div class="form-group">
                                 <div class="custom-control custom-radio">
-                                    <input checked type="radio" class="custom-control-input" name="payment"
+                                    <input value="online" checked type="radio" class="custom-control-input" name="payment"
                                            id="paypal">
                                     <label class="custom-control-label" for="paypal">Online</label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-radio">
-                                    <input type="radio" class="custom-control-input" name="payment"
+                                    <input value="cash" type="radio" class="custom-control-input" name="payment"
                                            id="directcheck">
                                     <label class="custom-control-label" for="directcheck">Attendant
                                         Payment</label>
                                 </div>
                             </div>
-                            <button class="btn btn-block btn-primary font-weight-bold py-3">Place Order</button>
-                        </div>
+                            {% if request.user.is_authenticated %}
+                                <a href="{% url 'cart:place_order' %}">
+                                    <button class="btn btn-block btn-primary font-weight-bold py-3">Place Order</button>
+                                </a>
+                                </div>
+                            {% else %}
+                                <a href="{% url 'Account:login' %}?next={{ request.get.full_path }}">
+                                    <button class="btn btn-block btn-primary font-weight-bold py-3">Login</button>
+                                </a>
+
+                            {% endif %}
                     </div>
                 </div>
                 <div class="col-lg-8 table-responsive mb-5">

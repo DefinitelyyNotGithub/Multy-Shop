@@ -43,10 +43,16 @@ def site_general_info(request):
             }
 
 
-def cart_count(request):
+def cart(request):
     from Cart.cart_madule import Cart
-    cart = Cart(request)
-    len_list = [id_ for id_ in cart]
-    return {'cart_len': len(len_list)}
+    cart_ = Cart(request)
+    cart_item: list = []
+    from Product.models import ProductModel
+    for item in cart_:
+        product = get_object_or_404(ProductModel, id=item['product_id'])
 
+        cart_item.append(
+            product.id
+        )
 
+    return {'cart_len': len(cart_item), 'cart_includes': cart_item}

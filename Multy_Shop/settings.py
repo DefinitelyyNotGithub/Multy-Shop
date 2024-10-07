@@ -79,7 +79,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'utils.context_processors.user_favorites_context',
                 'utils.context_processors.user_recent_viewed',
-                'utils.context_processors.cart_count',
+                'utils.context_processors.cart',
                 'utils.context_processors.site_general_info',
 
             ],
@@ -133,6 +133,8 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 MEDIA_URL = 'media/'
+
+
 
 STATICFILES_DIRS = [
     path.join(BASE_DIR, 'static')

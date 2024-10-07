@@ -27,19 +27,29 @@
             <div class="col-lg-5 mb-30">
                 <div id="product-carousel" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner bg-light">
-                        {% for image in product.images.all %}
-                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                <img class="w-100 h-100" src="{{ image.image.url }}" alt="Image">
-                            </div>
+                        {% if not product.images.all %}
+                            <img class="w-100 h-100" src="{% static 'img/no_product_image.png' %}" alt="Image">
 
-                        {% endfor %}
+                        {% else %}
+                            {% for image in product.images.all %}
+                                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                    <img class="w-100 h-100" src="{{ image.image.url }}" alt="Image">
+                                </div>
+
+                            {% endfor %}
+
+                            {% if product.images.count > 1 %}
+                                <a class="carousel-control-prev" href="#product-carousel" data-slide="prev">
+                                    <i class="fa fa-2x fa-angle-left text-dark"></i>
+                                </a>
+                                <a class="carousel-control-next" href="#product-carousel" data-slide="next">
+                                    <i class="fa fa-2x fa-angle-right text-dark"></i>
+                                </a>
+                            {% endif %}
+
+                        {% endif %}
                     </div>
-                    <a class="carousel-control-prev" href="#product-carousel" data-slide="prev">
-                        <i class="fa fa-2x fa-angle-left text-dark"></i>
-                    </a>
-                    <a class="carousel-control-next" href="#product-carousel" data-slide="next">
-                        <i class="fa fa-2x fa-angle-right text-dark"></i>
-                    </a>
+
                 </div>
             </div>
 
@@ -119,8 +129,8 @@
                                         <i class="fa fa-minus"></i>
                                     </button>
                                 </div>
-                                <input name="quantity" type="text"
-                                       class="form-control bg-secondary border-0 text-center" min="1" value="1">
+                                <input min="1" value="1" name="quantity" type="text"
+                                       class="form-control bg-secondary border-0 text-center">
                                 <div class="input-group-btn">
                                     <button type="button" class="btn btn-primary btn-plus">
                                         <i class="fa fa-plus"></i>
@@ -302,25 +312,7 @@
                             <div class="product-img position-relative overflow-hidden">
                                 <img style="width: 291.06px; height: 291.06px" class="img-fluid w-100"
                                      src="{{ product.product_image }}" alt="">
-                                <div class="product-action">
-
-                                    <a class="btn btn-outline-dark btn-square" href=""><i
-                                            class="fa fa-shopping-cart"></i></a>
-                                    {% if product in request.user.favorites.all or product.id in request.session.favorites %}
-                                        <a class="btn btn-outline-dark btn-square"
-                                           href="{% url 'product:add_to_user_favorite_list' product.id %}"><i
-                                                class="fa fa-heart"></i></a>
-                                    {% else %}
-                                        <a class="btn btn-outline-dark btn-square"
-                                           href="{% url 'product:add_to_user_favorite_list' product.id %}"><i
-                                                class="far fa-heart"></i></a>
-                                    {% endif %}
-                                    <a class="btn btn-outline-dark btn-square" href=""><i
-                                            class="fa fa-sync-alt"></i></a>
-                                    <a class="btn btn-outline-dark btn-square"
-                                       href="{% url 'product:Product_detail' product.id %}"><i
-                                            class="fa fa-search"></i></a>
-                                </div>
+                                {% include 'includes/product_actions.html' %}
                             </div>
                             <div class="text-center py-4">
                                 <a class="h6 text-decoration-none text-truncate" href="">{{ product.title }}</a>

@@ -21,6 +21,7 @@ class Contact(models.Model):
 
 
 class SiteContact(models.Model):
+    site_name = models.CharField(max_length=50, default="Multy Shop")
     site_description = models.TextField(null=True)
     phone_number = models.CharField(max_length=20, blank=True)
     email_address = models.EmailField(blank=True)

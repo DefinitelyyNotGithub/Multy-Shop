@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block contant %}
+    <link rel="stylesheet" href="{% static 'css/user_profile.css' %}">
+
+    <center>
+
+
+        <form method="post" action="{% url 'Account:user_profile' %}">
+            {% csrf_token %}
+
+            <div class="profile-picture">
+                <img style="height: 200px; width: 200px ; border-radius: 300px" id="profileImg" src="{% static 'img/product-9.jpg' %}" alt="Profile Picture"/>
+                <input type="file" id="fileInput" accept="image/*"/>
+            </div>
+
+
+        </form>
+
+
+    </center>
+
+
+    <script>
+        const profileImg = document.getElementById('profileImg');
+        const fileInput = document.getElementById('fileInput');
+
+        profileImg.parentElement.addEventListener('click', () => {
+            fileInput.click(); // Trigger file input on image click
+        });
+
+        fileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    profileImg.src = e.target.result; // Set new profile image
+                }
+                reader.readAsDataURL(file); // Read the file
+            }
+        });
+
+    </script>
+
+
+{% endblock %}

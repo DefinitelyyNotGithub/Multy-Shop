@@ -1,6 +1,7 @@
 from django.db import models
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
+from django.templatetags.static import static
 
 
 class UserManager(BaseUserManager):
@@ -121,3 +122,17 @@ class UserShippingAddress(models.Model):
     def __str__(self):
         return f'{self.first_name}--{self.last_name}'
 
+
+class UserProfile(models.Model):
+    user = models.ForeignKey(User, related_name="profile", on_delete=models.CASCADE, null=True, blank=True)
+    profile_pic = models.ImageField(upload_to='user/profile', null=True, blank=True)
+    user_name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.user_name
+
+    def profile_picture(self):
+        if self.profile_pic:
+            return self.profile_pic.url
+        else:
+            return static('img/no_profile_pic.jpg')

@@ -1,0 +1,109 @@
+<div class="product-action">
+    {% if product.id in cart_includes %}
+        <a class="btn btn-outline-dark btn-square">
+            <i class="fa fa-shopping-cart" style="color: green"></i>
+        </a>
+    {% else %}
+        <!-- Unique modal target for each product -->
+        <a class="btn btn-outline-dark btn-square" href="#" data-bs-toggle="modal"
+           data-bs-target="#addToCartModal-{{ product.id }}">
+            <i class="fa fa-shopping-cart"></i>
+        </a>
+    {% endif %}
+
+    {% if product in request.user.favorites.all or product.id in request.session.favorites %}
+        <a class="btn btn-outline-dark btn-square" href="{% url 'product:add_to_user_favorite_list' product.id %}">
+            <i class="fa fa-heart"></i>
+        </a>
+    {% else %}
+        <a class="btn btn-outline-dark btn-square" href="{% url 'product:add_to_user_favorite_list' product.id %}">
+            <i class="far fa-heart"></i>
+        </a>
+    {% endif %}
+    <a class="btn btn-outline-dark btn-square" href="">
+        <i class="fa fa-sync-alt"></i>
+    </a>
+    <a class="btn btn-outline-dark btn-square" href="{% url 'product:Product_detail' product.id %}">
+        <i class="fa fa-search"></i>
+    </a>
+
+    <!-- Move the modal inside the loop and give each modal a unique ID -->
+    <div class="modal fade" id="addToCartModal-{{ product.id }}" tabindex="-1"
+         aria-labelledby="addToCartModalLabel-{{ product.id }}" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addToCartModalLabel-{{ product.id }}">Add <strong style="color: #856e1b" >{{ product }}</strong>
+                        to Cart</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addToCartForm-{{ product.id }}">
+                        {% if product.color.all %}
+                            <div class="mb-3">
+                                <label for="color" class="form-label">Color</label>
+                                <select class="form-select" id="color" name="color" required>
+                                    {% for color in product.color.all %}
+                                        <option value="{{ color.title }}">{{ color.title }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        {% endif %}
+                        {% if product.size.all %}
+                            <div class="mb-3">
+                                <label for="size" class="form-label">Size</label>
+                                <select class="form-select" id="size" name="size" required>
+                                    {% for size in product.size.all %}
+                                        <option value="{{ size.title }}">{{ size.title }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        {% endif %}
+                        <div class="mb-3">
+                            <label for="quantity" class="form-label">Quantity</label>
+                            <input type="number" class="form-control" id="quantity" name="quantity" value="1" min="1"
+                                   required>
+                        </div>
+                        <input type="hidden" id="product_id" name="product_id" value="{{ product.id }}">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="submitAddToCartForm('{{ product.id }}')">Add
+                        to Cart
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function submitAddToCartForm(productId) {
+            const form = document.getElementById('addToCartForm-' + productId);
+            const formData = new FormData(form);
+
+            const color = formData.get('color');
+            const size = formData.get('size');
+            const quantity = formData.get('quantity');
+
+            const url = "{% url 'cart:add_to_cart' 0 %}".replace(0, productId);
+
+            fetch(url, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                }
+            }).then(response => {
+                if (response.ok) {
+                    alert("Product added to cart!");
+                    location.reload();
+                } else {
+                    alert("Failed to add item to cart.");
+                }
+            }).catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</div>

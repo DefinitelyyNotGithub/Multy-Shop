@@ -4,6 +4,7 @@ from Product.models import ProductModel, DiscountPrice
 class Cart:
     def __init__(self, request):
         self.session = request.session
+        self.coupon = request.session.get('coupon')
         cart = self.session.get('cart')
         if not cart:
             cart = self.session['cart'] = {}
@@ -36,8 +37,15 @@ class Cart:
             del self.cart[uid]
             self.save()
 
+    # def del_by_product_id(self, id):
+    #     product = ProductModel.objects.get(id=int(id))
+    #     if product in
+
     def total(self):
-        return sum(float(item['price']) * int(item['quantity']) for item in self.cart.values())
+        if self.coupon:
+            return self.coupon[-1]
+        total = sum(float(item['price']) * int(item['quantity']) for item in self.cart.values())
+        return total
 
     def save(self):
         self.session.modified = True

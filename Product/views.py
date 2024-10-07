@@ -1,10 +1,7 @@
-from django.urls import reverse_lazy
 from django.views.generic import ListView, TemplateView, FormView, CreateView
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import ProductModel, Category, DiscountPrice, RecentlyViewedProducts
-from django.http import JsonResponse
 from .forms import UserReviewForm
-from django.db.models import Q
 
 
 class NavBarView(TemplateView):
@@ -15,14 +12,6 @@ class NavBarView(TemplateView):
         context['category'] = Category.objects.all()
         return context
 
-
-# class ProductListView(ListView):
-#     template_name = 'product/product_list.html'
-#     paginate_by = 20
-#     context_object_name = 'obj'
-#
-#     def get_queryset(self):
-#         pass
 
 
 class ProductListView(ListView):
@@ -81,19 +70,6 @@ class ProductListView(ListView):
 
         return queryset
 
-
-# class UserFavoriteList(ListView):
-#     template_name = 'product/user_liked_products.html'
-#     context_object_name = "favorite_list"
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(UserFavoriteList, self).get_context_data(**kwargs)
-#         from utils.context_processors import user_favorites_context
-#         context.update(user_favorites_context(self.request))
-#         return context
-#
-#     def get_queryset(self):
-#         return []
 
 class UserFavoriteList(TemplateView):
     template_name = 'product/user_liked_products.html'

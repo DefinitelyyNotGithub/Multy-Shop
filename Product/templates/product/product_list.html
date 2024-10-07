@@ -128,10 +128,6 @@
                 <div class="row pb-3">
                     <div class="col-12 pb-1">
                         <div class="d-flex align-items-center justify-content-between mb-4">
-                            <div>
-                                <button class="btn btn-sm btn-light"><i class="fa fa-th-large"></i></button>
-                                <button class="btn btn-sm btn-light ml-2"><i class="fa fa-bars"></i></button>
-                            </div>
 
                             <form method="get">
 
@@ -189,25 +185,9 @@
                                         <img style="width: 291.06px; height: 291.06px" class="img-fluid w-100"
                                              src="{{ product.product_image }}"
                                              alt="">
-                                        <div class="product-action">
 
-                                            <a class="btn btn-outline-dark btn-square" href=""><i
-                                                    class="fa fa-shopping-cart"></i></a>
-                                            {% if product in request.user.favorites.all or product.id in request.session.favorites %}
-                                                <a class="btn btn-outline-dark btn-square"
-                                                   href="{% url 'product:add_to_user_favorite_list' product.id %}"><i
-                                                        class="fa fa-heart"></i></a>
-                                            {% else %}
-                                                <a class="btn btn-outline-dark btn-square"
-                                                   href="{% url 'product:add_to_user_favorite_list' product.id %}"><i
-                                                        class="far fa-heart"></i></a>
-                                            {% endif %}
-                                            <a class="btn btn-outline-dark btn-square" href=""><i
-                                                    class="fa fa-sync-alt"></i></a>
-                                            <a class="btn btn-outline-dark btn-square"
-                                               href="{% url 'product:Product_detail' product.id %}"><i
-                                                    class="fa fa-search"></i></a>
-                                        </div>
+                                        {% include 'includes/product_actions.html' %}
+
                                     </div>
                                     <div class="text-center py-4">
                                         <a class="h6 text-decoration-none text-truncate" href="">{{ product.title }}</a>

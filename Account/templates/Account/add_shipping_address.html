@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block contant %}
+
+
+
+
+    <link rel="stylesheet" href="{% static 'css/user_profile.css' %}">
+    <div class="container rounded bg-white mt-5 mb-5">
+        <div class="row">
+            <div class="col-md-3 border-right">
+                <div class="d-flex flex-column align-items-center text-center p-3 py-5"><span
+                        class="font-weight-bold">{{ site_general_info.site_name }}</span><span
+                        class="text-black-50">{{ site_general_info.email }}</span><span> </span></div>
+                <br>
+
+            </div>
+
+
+            <div class="col-md-5 border-right">
+                <div class="p-3 py-5">
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="text-right">{% if request.user.shipping_address.all %}Add a New Shipping
+                            Address{% else %}Add Shipping Address{% endif %}</h4>
+                    </div>
+
+                    <form action="{% url 'Account:user_profile' %}" method="post">
+                        {% csrf_token %}
+                        <div class="row mt-2">
+                            <div class="col-md-6"><label
+                                    class="labels">{{ form.first_name.label }}</label>{{ form.first_name }}</div>
+                            <div class="col-md-6"><label
+                                    class="labels">{{ form.last_name.label }}</label>{{ form.last_name }}
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-12"><label class="labels">{{ form.email.label }}</label>{{ form.email }}
+                            </div>
+                            <div class="col-md-12"><label
+                                    class="labels">{{ form.phone_number.label }}</label>{{ form.phone_number }}
+                            </div>
+                            <div class="col-md-12"><label class="labels">{{ form.city.label }}</label>{{ form.city }}
+                            </div>
+                            <div class="col-md-12"><label class="labels">{{ form.state.label }}</label>{{ form.state }}
+                            </div>
+                            <div class="col-md-12"><label
+                                    class="labels">{{ form.zip_code.label }}</label>{{ form.zip_code }}</div>
+                            <div class="col-md-12"><label
+                                    class="labels">{{ form.address.label }}</label>{{ form.address }}</div>
+
+                        </div>
+
+                        <div class="mt-5 text-center">
+                            <button class="btn btn-primary " type="submit">Add Address</button>
+
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+
+        {#        <div class="col-md-4">#}
+        {#            <div class="p-3 py-5">#}
+        {#                <div class="d-flex justify-content-between align-items-center experience">#}
+        {#                    <span>Edit profile</span><span class="border px-3 p-1 add-experience"><i#}
+        {#                        class="fa fa-plus"></i>&nbsp;Experience</span></div>#}
+        {#                <br>#}
+        {#                <div class="col-md-12"><label class="labels">User name :</label><input type="text"#}
+        {#                                                                                                   class="form-control"#}
+        {#                                                                                                   placeholder="User name"#}
+        {#                                                                                                   value=""></div>#}
+        {#                <br>#}
+        {#                <div class="col-md-12"><label class="labels">Additional Details</label><input type="text"#}
+        {#                                                                                              class="form-control"#}
+        {#                                                                                              placeholder="additional details"#}
+        {#                                                                                              value=""></div>#}
+        {#            </div>#}
+        {#        </div>#}
+    </div>
+    </div>
+    </div>
+    </div>
+
+{% endblock %}

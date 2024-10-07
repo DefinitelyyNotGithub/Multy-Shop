@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import TemplateView, CreateView, ListView
+
+from Cart.cart_madule import Cart
 from .models import Contact, AboutUs_Model, FAQs_model, NewsLetter
 from .forms import ContactForm
 from Product.models import ProductModel, SiteTitleBanner, Category, DiscountPrice, RecentlyViewedProducts
@@ -12,6 +14,7 @@ class HomeView(TemplateView):
     template_name = 'Home/index.html'
 
     def get_context_data(self, **kwargs):
+
         context = super(HomeView, self).get_context_data(**kwargs)
 
         if len(Category.objects.filter(on_first_page=True)) >= 12:

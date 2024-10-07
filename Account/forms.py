@@ -1,10 +1,8 @@
-from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.core import validators
 from django.core.exceptions import ValidationError
 from django import forms
-from .admin import User
-from .models import User as user
+from .models import User, UserShippingAddress, UserProfile
 
 
 class UserCreationForm(forms.ModelForm):
@@ -99,3 +97,78 @@ class ValidationCodeForm(forms.Form):
                                "class": "form-control",
                                "placeholder": "Enter Code"
                            }))
+
+
+class UserProfileShippingSettingsForm(forms.ModelForm):
+    class Meta:
+        model = UserShippingAddress
+        exclude = ['user', ]
+
+        widgets = {
+            'first_name': forms.TextInput(attrs={
+                'class': "form-control",
+                'placeholder': "First Name "
+
+            }),
+            'last_name': forms.TextInput(attrs={
+                'class': "form-control",
+                'placeholder': "Last Name ",
+                'label': "last name"
+            }),
+            'email': forms.EmailInput(attrs={
+                'class': "form-control",
+                'placeholder': "email ",
+                'label': "Email Address"
+            }),
+            'phone_number': forms.TextInput(attrs={
+                'class': "form-control",
+                'placeholder': "phone number ",
+                'label': "Telephone Number"
+            }),
+            'city': forms.TextInput(attrs={
+                'class': "form-control",
+                'placeholder': "city ",
+                'label': "City"
+            }),
+            'state': forms.TextInput(attrs={
+                'class': "form-control",
+                'placeholder': "state ",
+                'label': "State OR City"
+            }),
+            'zip_code': forms.TextInput(attrs={
+                'class': "form-control",
+                'placeholder': "Zip code ",
+                'label': "Zip Code"
+            }),
+            'address': forms.Textarea(attrs={
+                'class': "form-control",
+                'placeholder': "Address",
+                'label': "Full Address"
+            }),
+
+        }
+
+        labels = {
+            'first_name': 'Firs Name',
+            'last_name': "Last Name",
+            'email': 'Email Address',
+            'phone_number': "Telephone Number",
+            'city': 'City',
+            'state': 'City or State',
+            'zip_code': "Zip Code",
+            'Address': "Full Address"
+        }
+
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model: UserProfile
+        exclude = ['user', ]
+
+        widgets = {
+            'profile_pic': forms.ImageField(),
+            'user_name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'User Name'
+            })
+        }
